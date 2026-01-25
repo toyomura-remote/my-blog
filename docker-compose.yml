@@ -1,31 +1,32 @@
 services:
-  # データベース（PostgreSQL）
-  db:
-    image: postgres:15-alpine
-    container_name: blog-db
-    restart: always
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: blog_db
-    ports:
-      - "5432:5432"
-    volumes:
-      # - ./db_data:/var/lib/postgresql/data # データをPCに残す設定
+    # データベース（PostgreSQL）
+    db:
+        image: postgres:15-alpine
+        container_name: blog-db
+        restart: always
+        environment:
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: blog_db
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./backend/docker/postgres/local/conf.d/my_postgres.conf:/etc/postgresql/postgresql.conf
+            - ./backend/log/postgres/local:/var/log/postgresql
+            - ./backend/docker/postgres/local/db_data:/var/lib/postgresql/data
+            - ./backend/docker/postgres/local/init:/docker-entrypoint-initdb.d
 
-  # バックエンド（Go / Gin）
-  api:
-    build: ./backend
-    container_name: blog-api
-    ports:
-      - "8888:8080"
-    volumes:
-      - ./backend:/app
-    depends_on:
-      - db
-    environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: user
-      DB_PASSWORD: password
-      DB_NAME: blog_db
+    # バックエンド（Go / Gin）
+    api:
+        build:
+            context: .
+            dockerfile: ./backend/docker/golang/Dockerfile
+        container_name: blog-api
+        ports:
+            - "8888:8080"
+        volumes:
+            - ./backend:/app
+        depends_on:
+            - db
+        env_file:
+            - .env

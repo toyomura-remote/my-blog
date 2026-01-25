@@ -1,36 +1,20 @@
 package main
 
 import (
-    "database/sql"
-    "fmt"
-    "log"
-    "os"
+	"my-blog-backend/infra/db"
 
-    _ "github.com/lib/pq" // Postgresドライバー
+	_ "github.com/lib/pq" // Postgresドライバー
 )
 
+// func setUpRouter(db *sql.DB) *gin.Engine {
+// 	// r := gin.Default()
+// 	// userRouter := r.Group("/users")
+// 	// authRouter := r.Group("/auth")
+// }
+
 func main() {
-    // 接続情報（docker-composeで設定した名前を使う！）
-    dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-        os.Getenv("DB_HOST"),
-        os.Getenv("DB_PORT"),
-        os.Getenv("DB_USER"),
-        os.Getenv("DB_PASSWORD"),
-        os.Getenv("DB_NAME"),
-    )
+	db.Initialize()
+	conn := db.SetupDB()
+	defer conn.Close()
 
-    // DBに接続
-    db, err := sql.Open("postgres", dsn)
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()
-
-    // 実際に繋がるか確認（ピンポン打診）
-    err = db.Ping()
-    if err != nil {
-        log.Fatal("DB接続失敗...: ", err)
-    }
-
-    fmt.Println("DB接続成功！GoとPostgresが友達になりました！")
 }

@@ -97,12 +97,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "要件.md",
+                "file": "パッケージ関係.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "要件"
+              "title": "パッケージ関係"
             }
           }
         ],
@@ -271,11 +271,11 @@
   "active": "7cf4cf2c7da20adb",
   "lastOpenFiles": [
     "備忘録/DB.md",
-    "手順.md",
-    "備忘録/Docker.md",
-    "パッケージ関係.md",
     "反省点.md",
+    "手順.md",
     "要件.md",
+    "パッケージ関係.md",
+    "備忘録/Docker.md",
     "Welcome.md",
     "備忘録",
     "Docker"
