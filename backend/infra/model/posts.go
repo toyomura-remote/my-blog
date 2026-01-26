@@ -24,79 +24,79 @@ import (
 
 // Post is an object representing the database table.
 type Post struct {
-	ID          int64     `csv:"id" boil:"id" json:"id" toml:"id" yaml:"id"`
-	UserID      int64     `csv:"user_id" boil:"user_id" json:"user_id" toml:"user_id" yaml:"user_id"`
-	Did         string    `csv:"did" boil:"did" json:"did" toml:"did" yaml:"did"`
-	Name        string    `csv:"name" boil:"name" json:"name" toml:"name" yaml:"name"`
-	Content     string    `csv:"content" boil:"content" json:"content" toml:"content" yaml:"content"`
-	IsDeletedAt bool      `csv:"is_deleted_at" boil:"is_deleted_at" json:"is_deleted_at" toml:"is_deleted_at" yaml:"is_deleted_at"`
-	UpdatedAt   null.Time `csv:"updated_at" boil:"updated_at" json:"updated_at,omitempty" toml:"updated_at" yaml:"updated_at,omitempty"`
-	CreatedAt   time.Time `csv:"created_at" boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
+	ID        int64     `csv:"id" boil:"id" json:"id" toml:"id" yaml:"id"`
+	UserID    int64     `csv:"user_id" boil:"user_id" json:"user_id" toml:"user_id" yaml:"user_id"`
+	Did       string    `csv:"did" boil:"did" json:"did" toml:"did" yaml:"did"`
+	Title     string    `csv:"title" boil:"title" json:"title" toml:"title" yaml:"title"`
+	Content   string    `csv:"content" boil:"content" json:"content" toml:"content" yaml:"content"`
+	IsDeleted bool      `csv:"is_deleted" boil:"is_deleted" json:"is_deleted" toml:"is_deleted" yaml:"is_deleted"`
+	UpdatedAt null.Time `csv:"updated_at" boil:"updated_at" json:"updated_at,omitempty" toml:"updated_at" yaml:"updated_at,omitempty"`
+	CreatedAt time.Time `csv:"created_at" boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
 
 	R *postR `csv:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
 	L postL  `csv:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var PostColumns = struct {
-	ID          string
-	UserID      string
-	Did         string
-	Name        string
-	Content     string
-	IsDeletedAt string
-	UpdatedAt   string
-	CreatedAt   string
+	ID        string
+	UserID    string
+	Did       string
+	Title     string
+	Content   string
+	IsDeleted string
+	UpdatedAt string
+	CreatedAt string
 }{
-	ID:          "id",
-	UserID:      "user_id",
-	Did:         "did",
-	Name:        "name",
-	Content:     "content",
-	IsDeletedAt: "is_deleted_at",
-	UpdatedAt:   "updated_at",
-	CreatedAt:   "created_at",
+	ID:        "id",
+	UserID:    "user_id",
+	Did:       "did",
+	Title:     "title",
+	Content:   "content",
+	IsDeleted: "is_deleted",
+	UpdatedAt: "updated_at",
+	CreatedAt: "created_at",
 }
 
 var PostTableColumns = struct {
-	ID          string
-	UserID      string
-	Did         string
-	Name        string
-	Content     string
-	IsDeletedAt string
-	UpdatedAt   string
-	CreatedAt   string
+	ID        string
+	UserID    string
+	Did       string
+	Title     string
+	Content   string
+	IsDeleted string
+	UpdatedAt string
+	CreatedAt string
 }{
-	ID:          "posts.id",
-	UserID:      "posts.user_id",
-	Did:         "posts.did",
-	Name:        "posts.name",
-	Content:     "posts.content",
-	IsDeletedAt: "posts.is_deleted_at",
-	UpdatedAt:   "posts.updated_at",
-	CreatedAt:   "posts.created_at",
+	ID:        "posts.id",
+	UserID:    "posts.user_id",
+	Did:       "posts.did",
+	Title:     "posts.title",
+	Content:   "posts.content",
+	IsDeleted: "posts.is_deleted",
+	UpdatedAt: "posts.updated_at",
+	CreatedAt: "posts.created_at",
 }
 
 // Generated where
 
 var PostWhere = struct {
-	ID          whereHelperint64
-	UserID      whereHelperint64
-	Did         whereHelperstring
-	Name        whereHelperstring
-	Content     whereHelperstring
-	IsDeletedAt whereHelperbool
-	UpdatedAt   whereHelpernull_Time
-	CreatedAt   whereHelpertime_Time
+	ID        whereHelperint64
+	UserID    whereHelperint64
+	Did       whereHelperstring
+	Title     whereHelperstring
+	Content   whereHelperstring
+	IsDeleted whereHelperbool
+	UpdatedAt whereHelpernull_Time
+	CreatedAt whereHelpertime_Time
 }{
-	ID:          whereHelperint64{field: "\"posts\".\"id\""},
-	UserID:      whereHelperint64{field: "\"posts\".\"user_id\""},
-	Did:         whereHelperstring{field: "\"posts\".\"did\""},
-	Name:        whereHelperstring{field: "\"posts\".\"name\""},
-	Content:     whereHelperstring{field: "\"posts\".\"content\""},
-	IsDeletedAt: whereHelperbool{field: "\"posts\".\"is_deleted_at\""},
-	UpdatedAt:   whereHelpernull_Time{field: "\"posts\".\"updated_at\""},
-	CreatedAt:   whereHelpertime_Time{field: "\"posts\".\"created_at\""},
+	ID:        whereHelperint64{field: "\"posts\".\"id\""},
+	UserID:    whereHelperint64{field: "\"posts\".\"user_id\""},
+	Did:       whereHelperstring{field: "\"posts\".\"did\""},
+	Title:     whereHelperstring{field: "\"posts\".\"title\""},
+	Content:   whereHelperstring{field: "\"posts\".\"content\""},
+	IsDeleted: whereHelperbool{field: "\"posts\".\"is_deleted\""},
+	UpdatedAt: whereHelpernull_Time{field: "\"posts\".\"updated_at\""},
+	CreatedAt: whereHelpertime_Time{field: "\"posts\".\"created_at\""},
 }
 
 // PostRels is where relationship names are stored.
@@ -155,9 +155,9 @@ func (r *postR) GetComments() CommentSlice {
 type postL struct{}
 
 var (
-	postAllColumns            = []string{"id", "user_id", "did", "name", "content", "is_deleted_at", "updated_at", "created_at"}
-	postColumnsWithoutDefault = []string{"user_id", "did", "name", "content"}
-	postColumnsWithDefault    = []string{"id", "is_deleted_at", "updated_at", "created_at"}
+	postAllColumns            = []string{"id", "user_id", "did", "title", "content", "is_deleted", "updated_at", "created_at"}
+	postColumnsWithoutDefault = []string{"user_id", "did", "title", "content"}
+	postColumnsWithDefault    = []string{"id", "is_deleted", "updated_at", "created_at"}
 	postPrimaryKeyColumns     = []string{"id"}
 	postGeneratedColumns      = []string{}
 )

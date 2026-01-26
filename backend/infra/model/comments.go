@@ -24,52 +24,52 @@ import (
 
 // Comment is an object representing the database table.
 type Comment struct {
-	ID          int       `csv:"id" boil:"id" json:"id" toml:"id" yaml:"id"`
-	UserID      int64     `csv:"user_id" boil:"user_id" json:"user_id" toml:"user_id" yaml:"user_id"`
-	PostID      int64     `csv:"post_id" boil:"post_id" json:"post_id" toml:"post_id" yaml:"post_id"`
-	Content     string    `csv:"content" boil:"content" json:"content" toml:"content" yaml:"content"`
-	IsDeletedAt bool      `csv:"is_deleted_at" boil:"is_deleted_at" json:"is_deleted_at" toml:"is_deleted_at" yaml:"is_deleted_at"`
-	UpdatedAt   null.Time `csv:"updated_at" boil:"updated_at" json:"updated_at,omitempty" toml:"updated_at" yaml:"updated_at,omitempty"`
-	CreatedAt   time.Time `csv:"created_at" boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
+	ID        int       `csv:"id" boil:"id" json:"id" toml:"id" yaml:"id"`
+	UserID    int64     `csv:"user_id" boil:"user_id" json:"user_id" toml:"user_id" yaml:"user_id"`
+	PostID    int64     `csv:"post_id" boil:"post_id" json:"post_id" toml:"post_id" yaml:"post_id"`
+	Content   string    `csv:"content" boil:"content" json:"content" toml:"content" yaml:"content"`
+	IsDeleted bool      `csv:"is_deleted" boil:"is_deleted" json:"is_deleted" toml:"is_deleted" yaml:"is_deleted"`
+	UpdatedAt null.Time `csv:"updated_at" boil:"updated_at" json:"updated_at,omitempty" toml:"updated_at" yaml:"updated_at,omitempty"`
+	CreatedAt time.Time `csv:"created_at" boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
 
 	R *commentR `csv:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
 	L commentL  `csv:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var CommentColumns = struct {
-	ID          string
-	UserID      string
-	PostID      string
-	Content     string
-	IsDeletedAt string
-	UpdatedAt   string
-	CreatedAt   string
+	ID        string
+	UserID    string
+	PostID    string
+	Content   string
+	IsDeleted string
+	UpdatedAt string
+	CreatedAt string
 }{
-	ID:          "id",
-	UserID:      "user_id",
-	PostID:      "post_id",
-	Content:     "content",
-	IsDeletedAt: "is_deleted_at",
-	UpdatedAt:   "updated_at",
-	CreatedAt:   "created_at",
+	ID:        "id",
+	UserID:    "user_id",
+	PostID:    "post_id",
+	Content:   "content",
+	IsDeleted: "is_deleted",
+	UpdatedAt: "updated_at",
+	CreatedAt: "created_at",
 }
 
 var CommentTableColumns = struct {
-	ID          string
-	UserID      string
-	PostID      string
-	Content     string
-	IsDeletedAt string
-	UpdatedAt   string
-	CreatedAt   string
+	ID        string
+	UserID    string
+	PostID    string
+	Content   string
+	IsDeleted string
+	UpdatedAt string
+	CreatedAt string
 }{
-	ID:          "comments.id",
-	UserID:      "comments.user_id",
-	PostID:      "comments.post_id",
-	Content:     "comments.content",
-	IsDeletedAt: "comments.is_deleted_at",
-	UpdatedAt:   "comments.updated_at",
-	CreatedAt:   "comments.created_at",
+	ID:        "comments.id",
+	UserID:    "comments.user_id",
+	PostID:    "comments.post_id",
+	Content:   "comments.content",
+	IsDeleted: "comments.is_deleted",
+	UpdatedAt: "comments.updated_at",
+	CreatedAt: "comments.created_at",
 }
 
 // Generated where
@@ -206,21 +206,21 @@ func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
 }
 
 var CommentWhere = struct {
-	ID          whereHelperint
-	UserID      whereHelperint64
-	PostID      whereHelperint64
-	Content     whereHelperstring
-	IsDeletedAt whereHelperbool
-	UpdatedAt   whereHelpernull_Time
-	CreatedAt   whereHelpertime_Time
+	ID        whereHelperint
+	UserID    whereHelperint64
+	PostID    whereHelperint64
+	Content   whereHelperstring
+	IsDeleted whereHelperbool
+	UpdatedAt whereHelpernull_Time
+	CreatedAt whereHelpertime_Time
 }{
-	ID:          whereHelperint{field: "\"comments\".\"id\""},
-	UserID:      whereHelperint64{field: "\"comments\".\"user_id\""},
-	PostID:      whereHelperint64{field: "\"comments\".\"post_id\""},
-	Content:     whereHelperstring{field: "\"comments\".\"content\""},
-	IsDeletedAt: whereHelperbool{field: "\"comments\".\"is_deleted_at\""},
-	UpdatedAt:   whereHelpernull_Time{field: "\"comments\".\"updated_at\""},
-	CreatedAt:   whereHelpertime_Time{field: "\"comments\".\"created_at\""},
+	ID:        whereHelperint{field: "\"comments\".\"id\""},
+	UserID:    whereHelperint64{field: "\"comments\".\"user_id\""},
+	PostID:    whereHelperint64{field: "\"comments\".\"post_id\""},
+	Content:   whereHelperstring{field: "\"comments\".\"content\""},
+	IsDeleted: whereHelperbool{field: "\"comments\".\"is_deleted\""},
+	UpdatedAt: whereHelpernull_Time{field: "\"comments\".\"updated_at\""},
+	CreatedAt: whereHelpertime_Time{field: "\"comments\".\"created_at\""},
 }
 
 // CommentRels is where relationship names are stored.
@@ -279,9 +279,9 @@ func (r *commentR) GetUser() *User {
 type commentL struct{}
 
 var (
-	commentAllColumns            = []string{"id", "user_id", "post_id", "content", "is_deleted_at", "updated_at", "created_at"}
+	commentAllColumns            = []string{"id", "user_id", "post_id", "content", "is_deleted", "updated_at", "created_at"}
 	commentColumnsWithoutDefault = []string{"user_id", "post_id", "content"}
-	commentColumnsWithDefault    = []string{"id", "is_deleted_at", "updated_at", "created_at"}
+	commentColumnsWithDefault    = []string{"id", "is_deleted", "updated_at", "created_at"}
 	commentPrimaryKeyColumns     = []string{"id"}
 	commentGeneratedColumns      = []string{}
 )

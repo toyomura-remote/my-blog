@@ -22,7 +22,7 @@ table "users" {
     null = false
     type = varchar(255)
   }
-  column "is_deleted_at" {
+  column "is_deleted" {
     null    = false
     type    = boolean
     default = false
@@ -60,7 +60,7 @@ table "posts" {
     null = false
     type = varchar(255)
   }
-  column "name" {
+  column "title" {
     null = false
     type = varchar(255)
   }
@@ -68,7 +68,7 @@ table "posts" {
     null = false
     type = text
   }
-  column "is_deleted_at" {
+  column "is_deleted" {
     null    = false
     type    = boolean
     default = false
@@ -116,7 +116,7 @@ table "comments" {
     null = false
     type = text
   }
-  column "is_deleted_at" {
+  column "is_deleted" {
     null    = false
     type    = boolean
     default = false

@@ -24,79 +24,79 @@ import (
 
 // User is an object representing the database table.
 type User struct {
-	ID          int64     `csv:"id" boil:"id" json:"id" toml:"id" yaml:"id"`
-	Did         string    `csv:"did" boil:"did" json:"did" toml:"did" yaml:"did"`
-	Name        string    `csv:"name" boil:"name" json:"name" toml:"name" yaml:"name"`
-	Email       string    `csv:"email" boil:"email" json:"email" toml:"email" yaml:"email"`
-	Password    string    `csv:"password" boil:"password" json:"password" toml:"password" yaml:"password"`
-	IsDeletedAt bool      `csv:"is_deleted_at" boil:"is_deleted_at" json:"is_deleted_at" toml:"is_deleted_at" yaml:"is_deleted_at"`
-	UpdatedAt   null.Time `csv:"updated_at" boil:"updated_at" json:"updated_at,omitempty" toml:"updated_at" yaml:"updated_at,omitempty"`
-	CreatedAt   time.Time `csv:"created_at" boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
+	ID        int64     `csv:"id" boil:"id" json:"id" toml:"id" yaml:"id"`
+	Did       string    `csv:"did" boil:"did" json:"did" toml:"did" yaml:"did"`
+	Name      string    `csv:"name" boil:"name" json:"name" toml:"name" yaml:"name"`
+	Email     string    `csv:"email" boil:"email" json:"email" toml:"email" yaml:"email"`
+	Password  string    `csv:"password" boil:"password" json:"password" toml:"password" yaml:"password"`
+	IsDeleted bool      `csv:"is_deleted" boil:"is_deleted" json:"is_deleted" toml:"is_deleted" yaml:"is_deleted"`
+	UpdatedAt null.Time `csv:"updated_at" boil:"updated_at" json:"updated_at,omitempty" toml:"updated_at" yaml:"updated_at,omitempty"`
+	CreatedAt time.Time `csv:"created_at" boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
 
 	R *userR `csv:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
 	L userL  `csv:"-" boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var UserColumns = struct {
-	ID          string
-	Did         string
-	Name        string
-	Email       string
-	Password    string
-	IsDeletedAt string
-	UpdatedAt   string
-	CreatedAt   string
+	ID        string
+	Did       string
+	Name      string
+	Email     string
+	Password  string
+	IsDeleted string
+	UpdatedAt string
+	CreatedAt string
 }{
-	ID:          "id",
-	Did:         "did",
-	Name:        "name",
-	Email:       "email",
-	Password:    "password",
-	IsDeletedAt: "is_deleted_at",
-	UpdatedAt:   "updated_at",
-	CreatedAt:   "created_at",
+	ID:        "id",
+	Did:       "did",
+	Name:      "name",
+	Email:     "email",
+	Password:  "password",
+	IsDeleted: "is_deleted",
+	UpdatedAt: "updated_at",
+	CreatedAt: "created_at",
 }
 
 var UserTableColumns = struct {
-	ID          string
-	Did         string
-	Name        string
-	Email       string
-	Password    string
-	IsDeletedAt string
-	UpdatedAt   string
-	CreatedAt   string
+	ID        string
+	Did       string
+	Name      string
+	Email     string
+	Password  string
+	IsDeleted string
+	UpdatedAt string
+	CreatedAt string
 }{
-	ID:          "users.id",
-	Did:         "users.did",
-	Name:        "users.name",
-	Email:       "users.email",
-	Password:    "users.password",
-	IsDeletedAt: "users.is_deleted_at",
-	UpdatedAt:   "users.updated_at",
-	CreatedAt:   "users.created_at",
+	ID:        "users.id",
+	Did:       "users.did",
+	Name:      "users.name",
+	Email:     "users.email",
+	Password:  "users.password",
+	IsDeleted: "users.is_deleted",
+	UpdatedAt: "users.updated_at",
+	CreatedAt: "users.created_at",
 }
 
 // Generated where
 
 var UserWhere = struct {
-	ID          whereHelperint64
-	Did         whereHelperstring
-	Name        whereHelperstring
-	Email       whereHelperstring
-	Password    whereHelperstring
-	IsDeletedAt whereHelperbool
-	UpdatedAt   whereHelpernull_Time
-	CreatedAt   whereHelpertime_Time
+	ID        whereHelperint64
+	Did       whereHelperstring
+	Name      whereHelperstring
+	Email     whereHelperstring
+	Password  whereHelperstring
+	IsDeleted whereHelperbool
+	UpdatedAt whereHelpernull_Time
+	CreatedAt whereHelpertime_Time
 }{
-	ID:          whereHelperint64{field: "\"users\".\"id\""},
-	Did:         whereHelperstring{field: "\"users\".\"did\""},
-	Name:        whereHelperstring{field: "\"users\".\"name\""},
-	Email:       whereHelperstring{field: "\"users\".\"email\""},
-	Password:    whereHelperstring{field: "\"users\".\"password\""},
-	IsDeletedAt: whereHelperbool{field: "\"users\".\"is_deleted_at\""},
-	UpdatedAt:   whereHelpernull_Time{field: "\"users\".\"updated_at\""},
-	CreatedAt:   whereHelpertime_Time{field: "\"users\".\"created_at\""},
+	ID:        whereHelperint64{field: "\"users\".\"id\""},
+	Did:       whereHelperstring{field: "\"users\".\"did\""},
+	Name:      whereHelperstring{field: "\"users\".\"name\""},
+	Email:     whereHelperstring{field: "\"users\".\"email\""},
+	Password:  whereHelperstring{field: "\"users\".\"password\""},
+	IsDeleted: whereHelperbool{field: "\"users\".\"is_deleted\""},
+	UpdatedAt: whereHelpernull_Time{field: "\"users\".\"updated_at\""},
+	CreatedAt: whereHelpertime_Time{field: "\"users\".\"created_at\""},
 }
 
 // UserRels is where relationship names are stored.
@@ -155,9 +155,9 @@ func (r *userR) GetPosts() PostSlice {
 type userL struct{}
 
 var (
-	userAllColumns            = []string{"id", "did", "name", "email", "password", "is_deleted_at", "updated_at", "created_at"}
+	userAllColumns            = []string{"id", "did", "name", "email", "password", "is_deleted", "updated_at", "created_at"}
 	userColumnsWithoutDefault = []string{"did", "name", "email", "password"}
-	userColumnsWithDefault    = []string{"id", "is_deleted_at", "updated_at", "created_at"}
+	userColumnsWithDefault    = []string{"id", "is_deleted", "updated_at", "created_at"}
 	userPrimaryKeyColumns     = []string{"id"}
 	userGeneratedColumns      = []string{}
 )

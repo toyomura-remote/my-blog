@@ -18,10 +18,10 @@ func NewAuthRepository(db *sql.DB) domain.AuthRepository {
 	return &authRepository{db: db}
 }
 
-func (r *authRepository) CreateUser(ctx context.Context, user domain.User) error {
+func (r *authRepository) CreateUser(ctx context.Context, user *domain.User) error {
 	insertUser := model.User{
 		Did:      user.Did,
-		Name:     user.Name,
+		Email:    user.Email,
 		Password: user.Password,
 	}
 
@@ -42,8 +42,11 @@ func (r *authRepository) GetUserByEmail(ctx context.Context, email string) (*dom
 	}
 
 	domainUser := &domain.User{
-		Name: modelUser.Name,
-		// Did:  modelUser.,
+		ID:       modelUser.ID,
+		Name:     modelUser.Name,
+		Did:      modelUser.Did,
+		Email:    modelUser.Email,
+		Password: modelUser.Password,
 	}
 
 	return domainUser, nil

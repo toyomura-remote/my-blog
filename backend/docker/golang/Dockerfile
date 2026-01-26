@@ -1,10 +1,10 @@
-FROM golang:1.25-alpine
+FROM golang:1.23-alpine
 
 # git, curl に加えて libc6-compat をインストール
 RUN apk add --no-cache git curl libc6-compat
 
-# Air
-RUN go install github.com/air-verse/air@latest
+# Air (Go 1.23と互換性のあるバージョンを指定)
+RUN go install github.com/air-verse/air@v1.61.1
 
 WORKDIR /app
 
@@ -23,6 +23,7 @@ RUN go install github.com/aarondl/sqlboiler/v4@latest && \
     go install github.com/aarondl/sqlboiler/v4/drivers/sqlboiler-psql@latest
 RUN go install github.com/google/wire/cmd/wire@latest
 
-RUN go build -o main .
+# Airが自動でビルドするため、ここでのビルドは不要
+# RUN go build -o main .
 
 CMD ["air", "-c", ".air.toml"]
