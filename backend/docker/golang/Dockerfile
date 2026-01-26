@@ -1,4 +1,4 @@
-FROM golang:1.23-alpine
+FROM golang:1.24-alpine
 
 # git, curl に加えて libc6-compat をインストール
 RUN apk add --no-cache git curl libc6-compat

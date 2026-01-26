@@ -27,22 +27,45 @@ func NewPostController(postUseCase usecase.PostUseCase) PostController {
 }
 
 func (c *postController) GetPosts(ctx *gin.Context) {
-	return
+	posts, err := c.postUseCase.GetPosts(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Unexpected error"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"data": posts})
 }
 
 func (c *postController) GetPostByDid(ctx *gin.Context) {
 	return
 }
+
 func (c *postController) GetPostsByUserID(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists {
+		ctx.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+	userID := user.(*domain.User).ID
+
+	posts, err := c.postUseCase.GetPostsByUserID(ctx, userID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"data": posts})
+
 	return
 }
+
 func (c *postController) CreatePost(ctx *gin.Context) {
 	user, exists := ctx.Get("user")
 	if !exists {
 		ctx.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
-	///
+
 	userID := user.(*domain.User).ID
 
 	var input dto.CreatePostInput

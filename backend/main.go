@@ -26,6 +26,7 @@ func setUpRouter(conn *sql.DB) *gin.Engine {
 	authRouter.POST("/login", authController.Login)
 
 	postRouterWithAuth.POST("", postController.CreatePost)
+	postRouterWithAuth.GET("", postController.GetPostsByUserID)
 
 	return r
 }
@@ -36,6 +37,6 @@ func main() {
 	defer conn.Close()
 	r := setUpRouter(conn)
 
-	println("==== Serve! ====")
+	println("==== Ser! ====")
 	r.Run()
 }

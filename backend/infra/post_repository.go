@@ -21,6 +21,7 @@ func NewPostRepository(db *sql.DB) domain.PostRepository {
 func (r *postRepository) GetAll(ctx context.Context) ([]*domain.Post, error) {
 	posts, err := model.Posts(
 		qm.Load(model.PostRels.User),
+		qm.OrderBy("created_at DESC"),
 	).All(ctx, r.db)
 	if err != nil {
 		return nil, err
@@ -30,10 +31,12 @@ func (r *postRepository) GetAll(ctx context.Context) ([]*domain.Post, error) {
 
 	for i, post := range posts {
 		items[i] = &domain.Post{
+			UserID:  post.UserID,
 			Did:     post.Did,
 			Title:   post.Title,
 			Content: post.Content,
 			User: &domain.User{
+				ID:   post.R.User.ID,
 				Name: post.R.User.Name,
 			},
 		}
@@ -46,18 +49,44 @@ func (r *postRepository) GetByDid(ctx context.Context, did string) (*domain.Post
 	return nil, nil
 }
 func (r *postRepository) GetAllByUserID(ctx context.Context, userID int64) ([]*domain.Post, error) {
-	return nil, nil
+	posts, err := model.Posts(
+		qm.Load(model.PostRels.User),
+		qm.Where("user_id = ?", userID),
+		qm.OrderBy("created_at DESC"),
+	).All(ctx, r.db)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var items = make([]*domain.Post, len(posts))
+
+	for i, post := range posts {
+		items[i] = &domain.Post{
+			UserID:  post.UserID,
+			Did:     post.Did,
+			Title:   post.Title,
+			Content: post.Content,
+			User: &domain.User{
+				ID:   post.R.User.ID,
+				Name: post.R.User.Name,
+			},
+		}
+	}
+
+	return items, nil
+
 }
 
 func (r *postRepository) Create(ctx context.Context, post *domain.Post) error {
-	createPost := model.Post{
+	p := model.Post{
 		UserID:  post.UserID,
 		Did:     post.Did,
 		Title:   post.Title,
 		Content: post.Content,
 	}
 
-	if err := createPost.Insert(ctx, r.db, boil.Infer()); err != nil {
+	if err := p.Insert(ctx, r.db, boil.Infer()); err != nil {
 		return err
 	}
 

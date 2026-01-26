@@ -6,12 +6,12 @@ import (
 )
 
 type User struct {
-	ID       int64
-	Name     string
-	Did      string
-	Email    string
-	Password string
-	Post     []*Post
+	ID       int64   `json:"-"`
+	Name     string  `json:"name"`
+	Did      string  `json:"did"`
+	Email    string  `json:"-"`
+	Password string  `json:"-"`
+	Post     []*Post `json:"post"`
 }
 
 func HashPassword(password string) (string, error) {

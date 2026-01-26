@@ -7,11 +7,11 @@ import (
 )
 
 type Post struct {
-	UserID  int64
-	Did     string
-	Title   string
-	Content string
-	User    *User
+	UserID  int64  `json:"-"`
+	Did     string `json:"did"`
+	Title   string `json:"title"`
+	Content string `json:"content"`
+	User    *User  `json:"user"`
 }
 
 func NewPost(createPostInput dto.CreatePostInput, userID int64) (*Post, error) {

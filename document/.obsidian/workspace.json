@@ -55,12 +55,26 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "反省点.md",
+                "file": "backend/パッケージ関係.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "反省点"
+              "title": "パッケージ関係"
+            }
+          },
+          {
+            "id": "1fff12d76b5fea28",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "frontend/パッケージ関係.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "パッケージ関係"
             }
           },
           {
@@ -106,7 +120,7 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 4
       }
     ],
     "direction": "vertical"
@@ -268,18 +282,21 @@
       "bases:Create new base": false
     }
   },
-  "active": "b4411ca1e8d1feea",
+  "active": "5c79703e5aa18b2f",
   "lastOpenFiles": [
-    "手順.md",
-    "反省点.md",
-    "パッケージ関係.md",
-    "備忘録/Docker.md",
-    "備忘録/DB.md",
-    "タスク/1月26日.md",
-    "要件.md",
-    "タスク",
+    "backend/パッケージ関係.md",
+    "frontend/パッケージ関係.md",
+    "frontend",
+    "backend",
+    "backend/反省点.md",
+    "backend/手順.md",
+    "backend/備忘録/Docker.md",
+    "backend/備忘録/DB.md",
+    "backend/タスク/1月26日.md",
+    "backend/要件.md",
+    "backend/タスク",
     "Welcome.md",
-    "備忘録",
+    "backend/備忘録",
     "Docker"
   ]
 }

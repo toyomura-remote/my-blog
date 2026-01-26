@@ -1,4 +1,4 @@
-root = "."
+dockerroot = "."
 tmp_dir = "tmp"
 
 [build]
