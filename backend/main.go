@@ -6,6 +6,7 @@ import (
 	"my-blog-backend/lib/wire"
 	middlewares "my-blog-backend/middleware"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq" // Postgresドライバー
 )
@@ -17,16 +18,18 @@ func setUpRouter(conn *sql.DB) *gin.Engine {
 	postController := wire.InitPostController(conn)
 
 	r := gin.Default()
+	r.Use(cors.Default())
 	r.RedirectTrailingSlash = true // 末尾スラッシュを自動リダイレクト
 	authRouter := r.Group("/auth")
-	// postRouter := r.Group("/post")
-	postRouterWithAuth := r.Group("/post", middlewares.AuthMiddleware(authUseCase))
+	postRouter := r.Group("/posts")
+	postRouterWithAuth := r.Group("/posts", middlewares.AuthMiddleware(authUseCase))
 
 	authRouter.POST("/signup", authController.SignUp)
 	authRouter.POST("/login", authController.Login)
 
 	postRouterWithAuth.POST("", postController.CreatePost)
-	postRouterWithAuth.GET("", postController.GetPostsByUserID)
+	postRouterWithAuth.GET("/my", postController.GetPostsByUserID)
+	postRouter.GET("", postController.GetPosts)
 
 	return r
 }

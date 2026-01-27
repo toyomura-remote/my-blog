@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/json"
 	dto "my-blog-backend/DTO"
 	"my-blog-backend/domain"
 	"my-blog-backend/usecase"
@@ -32,6 +33,9 @@ func (c *postController) GetPosts(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Unexpected error"})
 		return
 	}
+
+	buf, _ := json.Marshal(posts)
+	println("c", string(buf))
 
 	ctx.JSON(http.StatusOK, gin.H{"data": posts})
 }

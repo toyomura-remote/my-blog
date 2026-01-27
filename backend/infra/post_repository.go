@@ -30,13 +30,14 @@ func (r *postRepository) GetAll(ctx context.Context) ([]*domain.Post, error) {
 	var items = make([]*domain.Post, len(posts))
 
 	for i, post := range posts {
+		println("users did:", post.R.User.Did)
 		items[i] = &domain.Post{
 			UserID:  post.UserID,
 			Did:     post.Did,
 			Title:   post.Title,
 			Content: post.Content,
 			User: &domain.User{
-				ID:   post.R.User.ID,
+				Did:  post.R.User.Did,
 				Name: post.R.User.Name,
 			},
 		}
@@ -69,6 +70,7 @@ func (r *postRepository) GetAllByUserID(ctx context.Context, userID int64) ([]*d
 			Content: post.Content,
 			User: &domain.User{
 				ID:   post.R.User.ID,
+				Did:  post.R.User.Did,
 				Name: post.R.User.Name,
 			},
 		}
