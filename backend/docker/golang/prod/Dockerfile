@@ -1,8 +1,10 @@
+# --- ステージ0: ドライバー付き Atlas バイナリ取得 ---
+FROM arigaio/atlas:latest-alpine AS atlas
+
 # --- ステージ1: ビルド環境 ---
 FROM golang:1.24.1-alpine AS builder
 
-RUN apk update && apk add --no-cache make gcc g++ curl && \
-    curl -sSf https://atlasgo.sh | sh
+RUN apk update && apk add --no-cache make gcc g++ curl
 
 ENV GOPATH /go
 ENV GO111MODULE=on
@@ -21,11 +23,11 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 
 # --- ステージ2: 実行環境 ---
 FROM alpine:3.19.1
-RUN apk add --no-cache ca-certificates tzdata postgresql postgresql-client libpq gcompat
+RUN apk add --no-cache ca-certificates tzdata
 WORKDIR /app
 
 COPY --from=builder /app/main /app/main
-COPY --from=builder /usr/local/bin/atlas /usr/local/bin/atlas
+COPY --from=atlas /atlas /usr/local/bin/atlas
 COPY --from=builder /go/src/main/atlas.hcl /app/atlas.hcl
 COPY --from=builder /go/src/main/db/migrations /app/db/migrations
 
