@@ -21,7 +21,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 
 # --- ステージ2: 実行環境 ---
 FROM alpine:3.19.1
-RUN apk add --no-cache ca-certificates tzdata libc6-compat
+RUN apk add --no-cache ca-certificates tzdata postgresql postgresql-client libpq gcompat
 WORKDIR /app
 
 COPY --from=builder /app/main /app/main
