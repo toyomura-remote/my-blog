@@ -10,5 +10,5 @@ type PostRepository interface {
 	GetAllByUserID(ctx context.Context, userID int64) ([]*Post, error)
 	Create(ctx context.Context, post *Post) error
 	Update(ctx context.Context, post *Post) error
-	Delete(ctx context.Context, postID int64) error
+	Delete(ctx context.Context, post *Post) error
 }

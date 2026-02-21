@@ -22,7 +22,7 @@ func HashPassword(password string) (string, error) {
 	return string(hashedPassword), nil
 }
 
-func NewUser(email, hashedPassword string) (*User, error) {
+func NewUser(name, email, hashedPassword string) (*User, error) {
 	uuid, err := uuid.NewRandom()
 	if err != nil {
 		return nil, err
@@ -30,6 +30,7 @@ func NewUser(email, hashedPassword string) (*User, error) {
 
 	user := User{
 		Did:      uuid.String(),
+		Name:     name,
 		Email:    email,
 		Password: hashedPassword,
 	}

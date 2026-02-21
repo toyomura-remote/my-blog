@@ -3,6 +3,7 @@ package infra
 import (
 	"context"
 	"database/sql"
+	dto "my-blog-backend/DTO"
 	"my-blog-backend/domain"
 	"my-blog-backend/infra/model"
 
@@ -18,18 +19,26 @@ func NewAuthRepository(db *sql.DB) domain.AuthRepository {
 	return &authRepository{db: db}
 }
 
-func (r *authRepository) CreateUser(ctx context.Context, user *domain.User) error {
+// TODO: ExistsByEmailを作成する
+
+func (r *authRepository) CreateUser(ctx context.Context, user *domain.User) (*dto.UserResponse, error) {
 	insertUser := model.User{
 		Did:      user.Did,
+		Name:     user.Name,
 		Email:    user.Email,
 		Password: user.Password,
 	}
 
 	if err := insertUser.Insert(ctx, r.db, boil.Infer()); err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &dto.UserResponse{
+		ID:    uint(insertUser.ID),
+		Name:  insertUser.Name,
+		Email: insertUser.Email,
+	}, nil
+
 }
 
 func (r *authRepository) GetUserByEmail(ctx context.Context, email string) (*domain.User, error) {
@@ -50,4 +59,10 @@ func (r *authRepository) GetUserByEmail(ctx context.Context, email string) (*dom
 	}
 
 	return domainUser, nil
+}
+
+func (r *authRepository) ExistsByEmail(ctx context.Context, email string) (bool, error) {
+	return model.Users(
+		qm.Where("email = ?", email),
+	).Exists(ctx, r.db)
 }

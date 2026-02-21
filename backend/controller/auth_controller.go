@@ -28,12 +28,16 @@ func (c *authController) SignUp(ctx *gin.Context) {
 		return
 	}
 
-	err := c.usecase.SignUp(ctx, input.Email, input.Password)
+	response, err := c.usecase.SignUp(ctx, input.Name, input.Email, input.Password)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.Status(http.StatusCreated)
+
+	ctx.JSON(http.StatusCreated, gin.H{
+		"user":  response.User,
+		"token": response.Token,
+	})
 }
 
 func (c *authController) Login(ctx *gin.Context) {
@@ -43,7 +47,7 @@ func (c *authController) Login(ctx *gin.Context) {
 		return
 	}
 
-	token, err := c.usecase.Login(ctx, input.Email, input.Password)
+	response, err := c.usecase.Login(ctx, input.Email, input.Password)
 	if err != nil {
 		if err.Error() == "User not found" {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
@@ -52,5 +56,8 @@ func (c *authController) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"token": token})
+	ctx.JSON(http.StatusCreated, gin.H{
+		"user":  response.User,
+		"token": response.Token,
+	})
 }

@@ -9,13 +9,20 @@ import (
 
 func SetupDB() *sql.DB {
 	// 接続情報
-	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_NAME"),
-	)
+	var dsn string
+	databaseURL := os.Getenv("DATABASE_URL")
+
+	if databaseURL != "" {
+		dsn = databaseURL
+	} else {
+		dsn = fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+			os.Getenv("DB_HOST"),
+			os.Getenv("DB_PORT"),
+			os.Getenv("DB_USER"),
+			os.Getenv("DB_PASSWORD"),
+			os.Getenv("DB_NAME"),
+		)
+	}
 
 	// DB接続
 	db, err := sql.Open("postgres", dsn)

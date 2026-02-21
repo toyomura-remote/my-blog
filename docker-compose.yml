@@ -20,7 +20,7 @@ services:
     api:
         build:
             context: .
-            dockerfile: ./backend/docker/golang/Dockerfile
+            dockerfile: ./backend/docker/golang/local/Dockerfile
         container_name: blog-api
         ports:
             - "8888:8080"

@@ -64,115 +64,59 @@
             }
           },
           {
-            "id": "1fff12d76b5fea28",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "frontend/パッケージ関係.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "パッケージ関係"
-            }
-          },
-          {
-            "id": "4e0dc92b6c0278e9",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "frontend/Axios.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Axios"
-            }
-          },
-          {
-            "id": "9165c31dbce94557",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "frontend/Axios.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Axios"
-            }
-          },
-          {
-            "id": "c80538aca2de1217",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "frontend/Type.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Type"
-            }
-          },
-          {
-            "id": "7f5e8273373cd7a9",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "frontend/課題.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "課題"
-            }
-          },
-          {
-            "id": "a732cdb26c845d00",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "frontend/Type.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Type"
-            }
-          },
-          {
-            "id": "e0a7e525e7e08763",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "frontend/ルーティング.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "ルーティング"
-            }
-          },
-          {
             "id": "be7309676dbab0df",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "備忘録/Docker.md",
+                "file": "backend/タスク/1月26日.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Docker"
+              "title": "1月26日"
+            }
+          },
+          {
+            "id": "460654bb35cc7560",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "コマンド.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "コマンド"
+            }
+          },
+          {
+            "id": "6d0ca0ffe37d1505",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "20260221.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "20260221"
+            }
+          },
+          {
+            "id": "5a85c978d5c9725f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "セキュリティ関連.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "セキュリティ関連"
             }
           },
           {
@@ -204,7 +148,7 @@
             }
           }
         ],
-        "currentTab": 10
+        "currentTab": 7
       }
     ],
     "direction": "vertical"
@@ -366,25 +310,30 @@
       "bases:Create new base": false
     }
   },
-  "active": "e0a7e525e7e08763",
+  "active": "5a85c978d5c9725f",
   "lastOpenFiles": [
-    "frontend/API.md",
+    "20260221.md",
+    "セキュリティ関連.md",
+    "コマンド.md",
+    "タスク",
+    "backend/タスク/1月26日.md",
+    "Untitled.base",
+    "Untitled 1.base",
+    "開発内容.md",
+    "backend/反省点.md",
+    "backend/要件.md",
+    "backend/パッケージ関係.md",
+    "backend/備忘録/Docker.md",
+    "backend/備忘録/DB.md",
     "frontend/パッケージ関係.md",
+    "frontend/反省点.md",
+    "frontend/課題.md",
     "frontend/ルーティング.md",
     "frontend/Type.md",
     "frontend/Axios.md",
-    "frontend/反省点.md",
-    "frontend/課題.md",
-    "frontend/API",
-    "backend/パッケージ関係.md",
+    "frontend/API.md",
     "frontend",
     "backend",
-    "backend/反省点.md",
-    "backend/手順.md",
-    "backend/備忘録/Docker.md",
-    "backend/備忘録/DB.md",
-    "backend/タスク/1月26日.md",
-    "backend/要件.md",
     "backend/タスク",
     "Welcome.md",
     "backend/備忘録",

@@ -41,6 +41,18 @@ func (c *postController) GetPosts(ctx *gin.Context) {
 }
 
 func (c *postController) GetPostByDid(ctx *gin.Context) {
+	var uriInput dto.GetPostByDidInput
+	if err := ctx.ShouldBindUri(&uriInput); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+
+	post, err := c.postUseCase.GetPostByDid(ctx, uriInput)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"data": post})
 	return
 }
 
@@ -72,13 +84,13 @@ func (c *postController) CreatePost(ctx *gin.Context) {
 
 	userID := user.(*domain.User).ID
 
-	var input dto.CreatePostInput
-	if err := ctx.ShouldBind(&input); err != nil {
+	var bodyInput dto.CreatePostInput
+	if err := ctx.ShouldBind(&bodyInput); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if err := c.postUseCase.CreatePost(ctx, input, userID); err != nil {
+	if err := c.postUseCase.CreatePost(ctx, bodyInput, userID); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -86,10 +98,60 @@ func (c *postController) CreatePost(ctx *gin.Context) {
 	ctx.Status(http.StatusCreated)
 
 }
+
 func (c *postController) UpdatePost(ctx *gin.Context) {
+	_, exists := ctx.Get("user")
+	if !exists {
+		ctx.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+
+	var bodyInput dto.UpdatePostInput
+	if err := ctx.ShouldBind(&bodyInput); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var uriInput dto.GetPostByDidInput
+	if err := ctx.ShouldBindUri(&uriInput); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := c.postUseCase.UpdatePost(ctx, bodyInput, uriInput.Did); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.Status(http.StatusOK)
 	return
 }
+
 func (c *postController) DeletePost(ctx *gin.Context) {
+	user, exists := ctx.Get("user")
+	if !exists {
+		ctx.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+
+	currentUser := user.(*domain.User)
+
+	var uriInput dto.GetPostByDidInput
+	if err := ctx.ShouldBindUri(&uriInput); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := c.postUseCase.DeletePost(ctx, uriInput.Did, currentUser.ID); err != nil {
+		if err.Error() == "unauthorized to delete this post" {
+			ctx.JSON(http.StatusForbidden, gin.H{"error": "他人の投稿は削除できません"})
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "削除に失敗しました"})
+		return
+	}
+
+	ctx.Status(http.StatusOK)
 	return
 }
 

@@ -2,16 +2,20 @@ package domain
 
 import (
 	dto "my-blog-backend/DTO"
+	"time"
 
 	"github.com/google/uuid"
 )
 
 type Post struct {
-	UserID  int64  `json:"-"`
-	Did     string `json:"did"`
-	Title   string `json:"title"`
-	Content string `json:"content"`
-	User    *User  `json:"user"`
+	ID        int64     `json:"-"`
+	UserID    int64     `json:"user_id"`
+	Did       string    `json:"did"`
+	Title     string    `json:"title"`
+	Content   string    `json:"content"`
+	IsDeleted bool      `json:"is_deleted"`
+	User      *User     `json:"user"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 func NewPost(createPostInput dto.CreatePostInput, userID int64) (*Post, error) {

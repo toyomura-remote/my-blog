@@ -2,7 +2,9 @@ package usecase
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	dto "my-blog-backend/DTO"
 	"my-blog-backend/domain"
 	"os"
 	"time"
@@ -12,8 +14,8 @@ import (
 )
 
 type AuthUseCase interface {
-	SignUp(ctx context.Context, email, password string) error
-	Login(ctx context.Context, email string, password string) (*string, error)
+	SignUp(ctx context.Context, name, email, password string) (*dto.AuthResponse, error)
+	Login(ctx context.Context, email string, password string) (*dto.AuthResponse, error)
 	GetUserFromToken(ctx context.Context, tokenString string) (*domain.User, error)
 }
 
@@ -25,23 +27,48 @@ func NewAuthUseCase(authRepo domain.AuthRepository) AuthUseCase {
 	return &authUseCase{authRepo: authRepo}
 }
 
-func (u *authUseCase) SignUp(ctx context.Context, email, password string) error {
+func (u *authUseCase) SignUp(ctx context.Context, name, email, password string) (*dto.AuthResponse, error) {
+
+	exists, err := u.authRepo.ExistsByEmail(ctx, email)
+	if err != nil {
+		return nil, err
+	}
+	if exists {
+		return nil, errors.New("既に使用されているアドレスです")
+	}
 
 	hashedPassword, err := domain.HashPassword(password)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	user, err := domain.NewUser(email, hashedPassword)
-
-	if err := u.authRepo.CreateUser(ctx, user); err != nil {
-		return err
+	user, err := domain.NewUser(name, email, hashedPassword)
+	if err != nil {
+		return nil, err
 	}
 
-	return nil
+	createdUser, err := u.authRepo.CreateUser(ctx, user)
+	if err != nil {
+		return nil, err
+	}
+
+	token, err := CreateToken(uint(createdUser.ID), createdUser.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto.AuthResponse{
+		User: dto.UserResponse{
+			ID:    uint(createdUser.ID),
+			Name:  createdUser.Name,
+			Email: createdUser.Email,
+		},
+		Token: *token,
+	}, nil
 }
 
-func (u *authUseCase) Login(ctx context.Context, email string, password string) (*string, error) {
+func (u *authUseCase) Login(ctx context.Context, email string, password string) (*dto.AuthResponse, error) {
+	fmt.Println("args", email, password)
 	foundUser, err := u.authRepo.GetUserByEmail(ctx, email)
 	if err != nil {
 		return nil, err
@@ -56,7 +83,14 @@ func (u *authUseCase) Login(ctx context.Context, email string, password string) 
 		return nil, err
 	}
 
-	return token, nil
+	return &dto.AuthResponse{
+		User: dto.UserResponse{
+			ID:    uint(foundUser.ID),
+			Name:  foundUser.Name,
+			Email: foundUser.Email,
+		},
+		Token: *token,
+	}, nil
 
 }
 

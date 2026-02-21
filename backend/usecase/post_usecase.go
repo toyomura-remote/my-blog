@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"errors"
 	dto "my-blog-backend/DTO"
 	"my-blog-backend/domain"
 )
@@ -10,11 +11,11 @@ import (
 
 type PostUseCase interface {
 	GetPosts(ctx context.Context) ([]*domain.Post, error)
-	GetPostByDid(ctx context.Context, did string) (*domain.Post, error)
+	GetPostByDid(ctx context.Context, did dto.GetPostByDidInput) (*domain.Post, error)
 	GetPostsByUserID(ctx context.Context, userID int64) ([]*domain.Post, error)
 	CreatePost(ctx context.Context, createPostInput dto.CreatePostInput, userID int64) error
-	UpdatePost(ctx context.Context, updatePostInput dto.CreatePostInput, did string, userID int64) error
-	DeletePost(ctx context.Context, userID, postID int64) error
+	UpdatePost(ctx context.Context, updatePostInput dto.UpdatePostInput, did string) error
+	DeletePost(ctx context.Context, did string, currentUserID int64) error
 }
 
 type postUseCase struct {
@@ -32,8 +33,12 @@ func (u *postUseCase) GetPosts(ctx context.Context) ([]*domain.Post, error) {
 	}
 	return posts, nil
 }
-func (u *postUseCase) GetPostByDid(ctx context.Context, did string) (*domain.Post, error) {
-	return nil, nil
+func (u *postUseCase) GetPostByDid(ctx context.Context, input dto.GetPostByDidInput) (*domain.Post, error) {
+	post, err := u.postRepo.GetByDid(ctx, input.Did)
+	if err != nil {
+		return nil, err
+	}
+	return post, nil
 }
 func (u *postUseCase) GetPostsByUserID(ctx context.Context, userID int64) ([]*domain.Post, error) {
 	posts, err := u.postRepo.GetAllByUserID(ctx, userID)
@@ -56,10 +61,37 @@ func (u *postUseCase) CreatePost(ctx context.Context, createPostInput dto.Create
 	return nil
 }
 
-func (u *postUseCase) UpdatePost(ctx context.Context, updatePostInput dto.CreatePostInput, did string, userID int64) error {
+func (u *postUseCase) UpdatePost(ctx context.Context, updatePostInput dto.UpdatePostInput, did string) error {
+
+	targetPost, err := u.postRepo.GetByDid(ctx, updatePostInput.Did)
+	if err != nil {
+		return err
+	}
+
+	targetPost.Title = updatePostInput.Title
+	targetPost.Content = updatePostInput.Content
+
+	if err := u.postRepo.Update(ctx, targetPost); err != nil {
+		return err
+	}
 	return nil
 }
 
-func (u *postUseCase) DeletePost(ctx context.Context, userID, postID int64) error {
+func (u *postUseCase) DeletePost(ctx context.Context, did string, currentUserID int64) error {
+	targetPost, err := u.postRepo.GetByDid(ctx, did)
+	if err != nil {
+		return err
+	}
+
+	if targetPost.UserID != currentUserID {
+		return errors.New("unauthorized to delete this post")
+	}
+
+	targetPost.IsDeleted = true
+
+	if err := u.postRepo.Delete(ctx, targetPost); err != nil {
+		return err
+	}
+
 	return nil
 }
