@@ -1,33 +1,23 @@
-# --- ステージ1: ビルド環境 ---
+# backend/Dockerfile
 FROM golang:1.24.1-alpine AS builder
+RUN apk update && apk add --no-cache gcc g++
 
-RUN apk update && apk add --no-cache make gcc g++ curl
-
-ENV GOPATH /go
-ENV GO111MODULE=on
-WORKDIR /go/src/main
-
-# backend フォルダの中身をコピーするように修正
-COPY backend/go.mod backend/go.sum ./
+WORKDIR /app
+COPY go.mod go.sum ./
 RUN go mod download
+COPY . .
 
-# backend の全ソースをコピー
-COPY backend/ .
+# アプリのビルド
+RUN CGO_ENABLED=0 GOOS=linux go build -o main ./main.go
 
-# バイナリビルド (main.go は backend/直下にある)
-RUN --mount=type=cache,target=/root/.cache/go-build \
-    CGO_ENABLED=0 GOOS=linux go build -p $(nproc) -o /app/main -ldflags="-s -w" main.go
-
-# --- ステージ2: 実行環境 (Atlas 公式イメージをベースにする) ---
-FROM arigaio/atlas:latest-alpine
+FROM alpine:3.19.1
 RUN apk add --no-cache ca-certificates tzdata
 WORKDIR /app
 
-COPY --from=builder /app/main /app/main
-COPY --from=builder /go/src/main/atlas.hcl /app/atlas.hcl
-COPY --from=builder /go/src/main/db/migrations /app/db/migrations
+# バイナリだけをコピー（マイグレーションファイルも不要なら消してOK）
+COPY --from=builder /app/main .
 
 EXPOSE 8080
 
-ENTRYPOINT []
-CMD ["sh", "-c", "atlas migrate apply --url \"$DATABASE_URL\" --dir \"file://db/migrations\" && /app/main"]
+# アプリを起動するだけ！
+CMD ["./main"]
