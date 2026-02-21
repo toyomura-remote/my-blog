@@ -4,24 +4,24 @@ RUN apk update && apk add --no-cache gcc g++
 
 WORKDIR /app
 
-# すでに /backend の中にいるので、直下の go.mod を見る
+# /backend のルートにいるので、直下の go.mod / go.sum をコピー
 COPY go.mod go.sum ./
 RUN go mod download
 
 # backend フォルダの中身（今いる場所）をすべてコピー
 COPY . .
 
-# cmd/main.go のパスを確認（backend/cmd/main.go なら cmd/main.go でOK）
-RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/main.go
+# backend 直下に main.go があるので ./main.go を指定
+RUN CGO_ENABLED=0 GOOS=linux go build -o main ./main.go
 
 FROM alpine:3.19.1
 RUN apk add --no-cache ca-certificates tzdata
 WORKDIR /app
 
+# ビルドしたバイナリをコピー
 COPY --from=builder /app/main .
-# マイグレーションファイル一式もコピー（一応持っておく）
-COPY --from=builder /app/db/migrations ./db/migrations
 
 EXPOSE 8080
 
+# 実行
 CMD ["./main"]
