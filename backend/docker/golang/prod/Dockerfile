@@ -15,9 +15,9 @@ RUN go mod download
 # backend の全ソースをコピー
 COPY backend/ .
 
-# バイナリビルド (cmd/main.go は backend/直下からの相対パス)
+# バイナリビルド (main.go は backend/直下にある)
 RUN --mount=type=cache,target=/root/.cache/go-build \
-    CGO_ENABLED=0 GOOS=linux go build -p $(nproc) -o /app/main -ldflags="-s -w" cmd/main.go
+    CGO_ENABLED=0 GOOS=linux go build -p $(nproc) -o /app/main -ldflags="-s -w" main.go
 
 # --- ステージ2: 実行環境 ---
 FROM alpine:3.19.1
