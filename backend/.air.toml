@@ -1,13 +1,15 @@
-root = "."
+dockerroot = "."
 tmp_dir = "tmp"
 
 [build]
   bin = "./tmp/main"
   cmd = "go build -o ./tmp/main ."
   delay = 1000
-  exclude_dir = ["assets", "tmp", "vendor"]
+  exclude_dir = ["assets", "tmp", "vendor", "docker/postgres/local/db_data", "log"]
   include_ext = ["go", "tpl", "tmpl", "html"]
   exclude_regex = ["_test.go"]
+  poll = true
+  poll_interval = 500
 
 [log]
   time = true

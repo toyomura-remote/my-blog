@@ -1,36 +1,55 @@
 package main
 
 import (
-    "database/sql"
-    "fmt"
-    "log"
-    "os"
+	"database/sql"
+	"my-blog-backend/infra/db"
+	"my-blog-backend/lib/wire"
+	"my-blog-backend/lib/wire/config"
+	middlewares "my-blog-backend/middleware"
 
-    _ "github.com/lib/pq" // Postgresドライバー
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+	_ "github.com/lib/pq" // Postgresドライバー
 )
 
+func setUpRouter(conn *sql.DB) *gin.Engine {
+
+	authUseCase := wire.InitAuthUseCase(conn)
+	authController := wire.InitAuthController(conn)
+	postController := wire.InitPostController(conn)
+
+	r := gin.Default()
+
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{config.GetFrontendURL()},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		AllowCredentials: true,
+	}))
+	r.RedirectTrailingSlash = true // 末尾スラッシュを自動リダイレクト
+	authRouter := r.Group("/auth")
+	postRouter := r.Group("/posts")
+	postRouterWithAuth := r.Group("/posts", middlewares.AuthMiddleware(authUseCase))
+
+	authRouter.POST("/signup", authController.SignUp)
+	authRouter.POST("/login", authController.Login)
+
+	postRouterWithAuth.POST("", postController.CreatePost)
+	postRouterWithAuth.DELETE("/:did", postController.DeletePost)
+	postRouterWithAuth.PUT("/:did", postController.UpdatePost)
+	postRouterWithAuth.GET("/my", postController.GetPostsByUserID)
+	postRouter.GET("", postController.GetPosts)
+	postRouter.GET("/:did", postController.GetPostByDid)
+
+	return r
+}
+
 func main() {
-    // 接続情報（docker-composeで設定した名前を使う！）
-    dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-        os.Getenv("DB_HOST"),
-        os.Getenv("DB_PORT"),
-        os.Getenv("DB_USER"),
-        os.Getenv("DB_PASSWORD"),
-        os.Getenv("DB_NAME"),
-    )
+	db.Initialize()
+	conn := db.SetupDB()
+	defer conn.Close()
+	r := setUpRouter(conn)
 
-    // DBに接続
-    db, err := sql.Open("postgres", dsn)
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()
-
-    // 実際に繋がるか確認（ピンポン打診）
-    err = db.Ping()
-    if err != nil {
-        log.Fatal("DB接続失敗...: ", err)
-    }
-
-    fmt.Println("DB接続成功！GoとPostgresが友達になりました！")
+	println("==== Ser! ====")
+	r.Run()
 }
