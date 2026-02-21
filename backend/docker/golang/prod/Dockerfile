@@ -1,6 +1,3 @@
-# --- ステージ0: ドライバー付き Atlas バイナリ取得 ---
-FROM arigaio/atlas:latest-alpine AS atlas
-
 # --- ステージ1: ビルド環境 ---
 FROM golang:1.24.1-alpine AS builder
 
@@ -21,16 +18,16 @@ COPY backend/ .
 RUN --mount=type=cache,target=/root/.cache/go-build \
     CGO_ENABLED=0 GOOS=linux go build -p $(nproc) -o /app/main -ldflags="-s -w" main.go
 
-# --- ステージ2: 実行環境 ---
-FROM alpine:3.19.1
+# --- ステージ2: 実行環境 (Atlas 公式イメージをベースにする) ---
+FROM arigaio/atlas:latest-alpine
 RUN apk add --no-cache ca-certificates tzdata
 WORKDIR /app
 
 COPY --from=builder /app/main /app/main
-COPY --from=atlas /atlas /usr/local/bin/atlas
 COPY --from=builder /go/src/main/atlas.hcl /app/atlas.hcl
 COPY --from=builder /go/src/main/db/migrations /app/db/migrations
 
 EXPOSE 8080
 
+ENTRYPOINT []
 CMD ["sh", "-c", "atlas migrate apply --url \"$DATABASE_URL\" --dir \"file://db/migrations\" && /app/main"]
