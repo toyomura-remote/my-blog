@@ -1,11 +1,21 @@
 env "local" {
-    url = "postgres://user:password@db:5432/blog_db?sslmode=disable"
-    dev = "postgres://user:password@db:5432/atlas_dev?sslmode=disable"
+    url = getenv("DB_URL_LOCAL")
+    dev = getenv("DB_URL_LOCAL_DEV")
 
     migration {
-        dir = "file://db/migrations"
-        format = atlas
+        dir             = "file://db/migrations"
+        format          = atlas
+        revisions_schema = "public"
     }
 
     src = "file://db/original"
+}
+
+env "prod" {
+    url = getenv("DB_URL_PROD")
+    dev = getenv("DB_URL_PROD_DEV")
+
+    migration {
+        dir = "file://db/migrations"
+    }
 }

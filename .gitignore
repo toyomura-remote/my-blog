@@ -18,6 +18,9 @@ db_data
 .go-version
 infra/model/atlas_schema_revisions.go
 
+# secrets/config
+backend/.env
+
 # Dependency directories (remove the comment below to include it)
 # vendor/
 .env

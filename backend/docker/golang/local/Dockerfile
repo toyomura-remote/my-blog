@@ -6,7 +6,7 @@ RUN apk update && apk add --no-cache git curl libc6-compat
 # Air (Go 1.23と互換性のあるバージョンを指定)
 RUN go install github.com/air-verse/air@v1.61.1
 
-WORKDIR /app9ii98
+WORKDIR /app
 
 # 依存関係のコピーとダウンロード
 COPY backend/go.mod backend/go.sum ./

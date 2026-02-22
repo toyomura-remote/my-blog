@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { postService } from "../../../api/postService";
 import type { Post } from "../../../types/post";
@@ -10,7 +10,6 @@ import type { RootState } from "../../../app/store";
 const PostDetail = () => {
     const { did } = useParams<{ did: string }>();
     const [post, setPost] = useState<Post | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
     const { user: currentUser} = useSelector((state: RootState) => state.auth);
     const navigate = useNavigate();
 
@@ -26,20 +25,16 @@ const PostDetail = () => {
     };
 
     console.log(post?.user_id);
-    
 
     useEffect(() => {
         const fetchDetail = async () => {
             if (!did) return;
 
             try {
-                setLoading(true);
                 const data = await postService.getPostByDid(did);
                 setPost(data);
             } catch (err) {
                 console.error(err);
-            } finally {
-                setLoading(false);
             }
         };
         fetchDetail();
