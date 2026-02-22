@@ -9,19 +9,21 @@ export const SectionContainer = styled.div`
     }
 `;
 export const Heading = styled.h2`
+    margin-bottom: 50px;
+    font-size: 1.8rem;
     ${media.tablet} {
-        margin-bottom: 50px;
         font-size: 2rem;
     }
 `;
 export const Form = styled.form`
+    margin-bottom: 30px;
     ${media.tablet} {
-        margin-bottom: 30px;
     }
 `;
 export const ContentArea = styled.div`
     display: flex;
     flex-direction: column;
+    margin-bottom: 20px;
     ${media.tablet} {
         margin-bottom: 30px;
     }
@@ -29,9 +31,9 @@ export const ContentArea = styled.div`
 export const Label = styled.label`
     display: flex;
     flex-direction: column;
+    margin-bottom: 10px;
+    font-size: 1.4rem;
     ${media.tablet} {
-        margin-bottom: 10px;
-        font-size: 1.4rem;
     }
 `;
 export const InputTitle = styled.input`
@@ -42,15 +44,15 @@ export const InputTitle = styled.input`
     }
 `;
 export const Content = styled.textarea`
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    height: 150px;
     ${media.tablet} {
-        font-size: 1.4rem;
-        margin-bottom: 10px;
-        height: 30px;
         height: 300px;
     }
 `;
 export const SubmitButton = styled.button`
-    background-color:#000;
+    background-color: #000;
     color: #fff;
     padding: 10px;
     font-size: 1.1rem;
@@ -59,4 +61,3 @@ export const SubmitButton = styled.button`
         font-size: 1.4rem;
     }
 `;
-

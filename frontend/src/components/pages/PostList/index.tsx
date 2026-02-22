@@ -26,11 +26,10 @@ const PostList = () => {
         fetchPosts();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
-
     return (
         <S.Section>
             <S.SectionContainer>
+                {loading && <S.Loading>Loading...</S.Loading>}
                 <S.List>
                     {posts.length > 0 ? (
                         posts.map((post) => (
@@ -45,7 +44,7 @@ const PostList = () => {
                             </S.Item>
                         ))
                     ) : (
-                        <p>投稿がありません。</p>
+                        <S.NoPost>投稿がありません</S.NoPost>
                     )}
                 </S.List>
             </S.SectionContainer>

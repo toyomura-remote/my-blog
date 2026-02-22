@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { media } from "../../../styles/media";
-
 import { Link as RouterLink } from "react-router-dom";
 import { theme } from "../../../styles/theme";
 
@@ -54,6 +53,16 @@ export const CreatedAt = styled.time`
     }
 `;
 export const Author = styled.p`
+    font-size: 1.2rem;
+    ${media.desktop} {
+    }
+`;
+export const NoPost = styled.p`
+    font-size: 1.2rem;
+    ${media.desktop} {
+    }
+`;
+export const Loading = styled.p`
     font-size: 1.2rem;
     ${media.desktop} {
     }

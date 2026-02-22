@@ -15,9 +15,10 @@ export const SectionContainer = styled.div`
     border-radius: 6px;
     padding: 20px;
     max-width: ${theme.Container.form};
-    width: 100%;
+    width: auto;
     ${media.tablet} {
         margin: 0 auto;
+        width: 100%;
     }
 `;
 
@@ -89,7 +90,13 @@ export const SignupLink = styled(Link)`
     font-size: 1.4rem;
     span{
         font-weight: bold;
+        display: block;
+        line-height:2;
+            ${media.tablet} {
+        display: inline-block;
     }
+    }
+
     ${media.desktop} {
     }
 `;

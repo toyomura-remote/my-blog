@@ -34,7 +34,7 @@ const New = () => {
         <section>
             <S.SectionContainer>
                 <S.Heading>記事作成</S.Heading>
-                <form action="" onSubmit={handleSubmit}>
+                <S.Form action="" onSubmit={handleSubmit}>
                     <S.ContentArea>
                         <S.Label htmlFor="inputTitle">タイトル</S.Label>
                         <S.InputTitle id="inputTitle" type="text" onChange={(e) => SetTitleInput(e.target.value)} value={titleInput} />
@@ -44,7 +44,7 @@ const New = () => {
                         <S.Content id="Content" onChange={(e) => SetContentInput(e.target.value)} value={contentInput} />
                     </S.ContentArea>
                     <S.SubmitButton type="submit">投稿</S.SubmitButton>
-                </form>
+                </S.Form>
             </S.SectionContainer>
         </section>
     );
