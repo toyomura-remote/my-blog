@@ -68,7 +68,6 @@ func (u *authUseCase) SignUp(ctx context.Context, name, email, password string) 
 }
 
 func (u *authUseCase) Login(ctx context.Context, email string, password string) (*dto.AuthResponse, error) {
-	fmt.Println("args", email, password)
 	foundUser, err := u.authRepo.GetUserByEmail(ctx, email)
 	if err != nil {
 		return nil, err

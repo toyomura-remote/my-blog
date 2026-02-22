@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { postService } from "../../../api/postService";
 import type { Post } from "../../../types/post";
 import * as S from "./style";
@@ -55,7 +55,7 @@ const PostDetail = () => {
                 <S.ContentText>{post.content}</S.ContentText>
                 {currentUser && currentUser.id === post.user_id && (
                     <S.ButtonArea>
-                        <S.EditButton>編集する</S.EditButton>
+                        <Link to={`/posts/update/${did}`}><S.EditButton>編集する</S.EditButton></Link>
                         <S.DeleteButton onClick={() => did && handleDelete(did)}>削除する</S.DeleteButton>
                     </S.ButtonArea>
                 )}

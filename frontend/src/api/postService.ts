@@ -11,6 +11,15 @@ export const postService = {
             },
         );
     },
+    updatePost: async (did: string, title: string, content: string) => {
+        await apiClient.put(
+            `posts/${did}`,
+            {
+                title,
+                content,
+            }
+        );
+    },
     deletePost: async (did: string) => {
         await apiClient.delete(
             `posts/${did}`

@@ -9,6 +9,7 @@ import Login from "./components/pages/Auth/Login";
 import PostDetail from "./components/pages/PostDetail";
 import CreatePost from "./components/pages/CreatePost";
 import Home from "./components/pages/Home";
+import UpdatePost from "./components/pages/UpdatePost";
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/posts/:did" element={<PostDetail />} />
                         <Route path="/posts/new" element={<CreatePost />} />
+                        <Route path="/posts/update/:did" element={<UpdatePost />} />
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/login" element={<Login />} />
                     </Routes>

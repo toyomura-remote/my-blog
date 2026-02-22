@@ -62,8 +62,7 @@ func (u *postUseCase) CreatePost(ctx context.Context, createPostInput dto.Create
 }
 
 func (u *postUseCase) UpdatePost(ctx context.Context, updatePostInput dto.UpdatePostInput, did string) error {
-
-	targetPost, err := u.postRepo.GetByDid(ctx, updatePostInput.Did)
+	targetPost, err := u.postRepo.GetByDid(ctx, did)
 	if err != nil {
 		return err
 	}
@@ -74,10 +73,12 @@ func (u *postUseCase) UpdatePost(ctx context.Context, updatePostInput dto.Update
 	if err := u.postRepo.Update(ctx, targetPost); err != nil {
 		return err
 	}
+
 	return nil
 }
 
 func (u *postUseCase) DeletePost(ctx context.Context, did string, currentUserID int64) error {
+
 	targetPost, err := u.postRepo.GetByDid(ctx, did)
 	if err != nil {
 		return err

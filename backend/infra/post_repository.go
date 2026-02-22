@@ -3,6 +3,7 @@ package infra
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"my-blog-backend/domain"
 	"my-blog-backend/infra/model"
 
@@ -49,11 +50,13 @@ func (r *postRepository) GetAll(ctx context.Context) ([]*domain.Post, error) {
 }
 
 func (r *postRepository) GetByDid(ctx context.Context, did string) (*domain.Post, error) {
+
 	post, err := model.Posts(
 		qm.Load(model.PostRels.User),
 		qm.Where("is_deleted = ?", false),
 		qm.Where("did = ?", did),
 	).One(ctx, r.db)
+
 	if err != nil {
 		return nil, err
 	}
@@ -121,13 +124,15 @@ func (r *postRepository) Create(ctx context.Context, post *domain.Post) error {
 }
 
 func (r *postRepository) Update(ctx context.Context, post *domain.Post) error {
-
 	dbPost := &model.Post{
+		ID:      post.ID,
 		Title:   post.Title,
 		Content: post.Content,
 	}
 
-	if _, err := dbPost.Update(ctx, r.db, boil.Infer()); err != nil {
+	fmt.Println(dbPost.Content)
+
+	if _, err := dbPost.Update(ctx, r.db, boil.Whitelist("title", "content")); err != nil {
 		return err
 	}
 
