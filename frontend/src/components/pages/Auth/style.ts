@@ -16,6 +16,7 @@ export const SectionContainer = styled.div`
     padding: 20px;
     max-width: ${theme.Container.form};
     width: auto;
+        background-color: #fff;
     ${media.tablet} {
         margin: 0 auto;
         width: 100%;
